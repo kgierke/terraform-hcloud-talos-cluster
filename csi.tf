@@ -17,4 +17,8 @@ resource "helm_release" "hcloud_csi" {
   values = [
     local.csi_values
   ]
+
+  depends_on = [
+    data.talos_cluster_health.this
+  ]
 }

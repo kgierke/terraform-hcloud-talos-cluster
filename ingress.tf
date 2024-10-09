@@ -55,6 +55,10 @@ resource "helm_release" "traefik" {
   values = [
     local.ingress_traefik_values
   ]
+
+  depends_on = [
+    data.talos_cluster_health.this
+  ]
 }
 
 # Install Cert-Manager
@@ -68,6 +72,10 @@ resource "helm_release" "cert_manager" {
 
   values = [
     local.ingress_certmanager_values
+  ]
+
+  depends_on = [
+    data.talos_cluster_health.this
   ]
 }
 
@@ -90,6 +98,7 @@ resource "helm_release" "cert_manager_clusterissuer" {
   }
 
   depends_on = [
+    data.talos_cluster_health.this,
     helm_release.cert_manager
   ]
 }

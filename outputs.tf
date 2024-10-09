@@ -21,6 +21,11 @@ output "servers" {
   )
 }
 
+output "kubernetes_ready" {
+  description = "True if the Kubernetes cluster is ready."
+  value       = data.talos_cluster_health.this
+}
+
 output "talosconfig" {
   description = "Talos configuration for the cluster."
   value       = data.talos_client_configuration.this.talos_config

@@ -21,6 +21,10 @@ resource "kubernetes_secret" "hcloud" {
     token   = var.cloud_controller_manager_hcloud_token
     network = var.private_network_name
   }
+
+  depends_on = [
+    data.talos_cluster_health.this
+  ]
 }
 
 # Install the Hetzner Cloud Controller Manager Helm chart
@@ -34,5 +38,9 @@ resource "helm_release" "hcloud_cloud_controller_manager" {
 
   values = [
     local.cloud_controller_manager_values
+  ]
+
+  depends_on = [
+    data.talos_cluster_health.this
   ]
 }
