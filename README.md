@@ -12,36 +12,10 @@ Terraform module for bootstrapping a Kubernetes Cluster on Hetzner Cloud infrast
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >=2.32.0 |
 | <a name="requirement_talos"></a> [talos](#requirement\_talos) | >=0.6.0 |
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | >=1.43.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | >=2.15.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >=2.32.0 |
-| <a name="provider_talos"></a> [talos](#provider\_talos) | >=0.6.0 |
-
 ## Resources
 
 | Name | Type |
 |------|------|
-| [hcloud_firewall.default](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall) | resource |
-| [hcloud_network.this](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/network) | resource |
-| [hcloud_network_subnet.this](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/network_subnet) | resource |
-| [hcloud_placement_group.controlplanes](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/placement_group) | resource |
-| [hcloud_server.controlplanes](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
-| [hcloud_server.workers](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
-| [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.cert_manager_clusterissuer](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.hcloud_cloud_controller_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.hcloud_csi](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.traefik](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [kubernetes_secret.hcloud](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
-| [talos_cluster_kubeconfig.this](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/resources/cluster_kubeconfig) | resource |
-| [talos_machine_bootstrap.this](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/resources/machine_bootstrap) | resource |
-| [talos_machine_configuration_apply.controlplanes](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/resources/machine_configuration_apply) | resource |
-| [talos_machine_configuration_apply.workers](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/resources/machine_configuration_apply) | resource |
-| [talos_machine_secrets.this](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/resources/machine_secrets) | resource |
 | [hcloud_image.talos](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/image) | data source |
 | [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/data-sources/client_configuration) | data source |
 | [talos_machine_configuration.controlplane](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/data-sources/machine_configuration) | data source |
@@ -81,11 +55,11 @@ Terraform module for bootstrapping a Kubernetes Cluster on Hetzner Cloud infrast
 
 | Name | Description |
 |------|-------------|
-| <a name="output_controlplanes"></a> [controlplanes](#output\_controlplanes) | n/a |
-| <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | n/a |
-| <a name="output_servers"></a> [servers](#output\_servers) | n/a |
-| <a name="output_talosconfig"></a> [talosconfig](#output\_talosconfig) | n/a |
-| <a name="output_workers"></a> [workers](#output\_workers) | n/a |
+| <a name="output_controlplanes"></a> [controlplanes](#output\_controlplanes) | List of controlplane nodes. Can be used to create DNS records for the controlplane nodes. |
+| <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | Kubeconfig for the cluster. |
+| <a name="output_servers"></a> [servers](#output\_servers) | List of all nodes including controlplanes and workers. |
+| <a name="output_talosconfig"></a> [talosconfig](#output\_talosconfig) | Talos configuration for the cluster. |
+| <a name="output_workers"></a> [workers](#output\_workers) | List of worker nodes. Can be used to create DNS records for the worker nodes. |
 <!-- END_TF_DOCS -->
 
 ## Documentation

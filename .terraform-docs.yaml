@@ -2,7 +2,9 @@ formatter: markdown
 
 sections:
   hide:
+    - providers
     - modules
+    - resources
 
 output:
   file: README.md
