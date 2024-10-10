@@ -37,8 +37,9 @@ cluster:
         metadata:
           name: hcloud
           namespace: kube-system
+        type: Opaque
         data:
 %{if ccm_hcloud_token != ""~}
-          token: ${ccm_hcloud_token}
+          token: ${base64encode(ccm_hcloud_token)}
 %{endif~}
-          network: ${private_network_name}
+          network: ${base64encode(private_network_name)}
