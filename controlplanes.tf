@@ -1,32 +1,20 @@
 # Configure the control planes for the Hetzner Cloud Talos Kubernetes cluster
 
 locals {
-  controlplanes_config = var.controlplanes_config != "" ? var.controlplanes_config : <<EOF
-machine:
-  kubelet:
-    nodeIP:
-      validSubnets:
-        - ${var.private_network_subnet_range}
-  certSANs:
-    - ${local.endpoint}
-  time:
-    servers:
-      - ntp1.hetzner.de
-      - ntp2.hetzner.com
-      - ntp3.hetzner.net
-      - 0.de.pool.ntp.org
-      - 1.de.pool.ntp.org
-      - time.cloudflare.com
-%{if length(var.workers) <= 0~}
-  nodeLabels:
-    node.kubernetes.io/exclude-from-external-load-balancers:
-      $patch: delete
-%{endif~}
-cluster:
-  allowSchedulingOnControlPlanes: true
-  externalCloudProvider:
-    enabled: true
-  EOF
+  ccm_manifest_url = var.ccm_manifest_url != "" ? var.ccm_manifest_url : "https://raw.githubusercontent.com/hetznercloud/hcloud-cloud-controller-manager/refs/tags/v${var.ccm_version}/deploy/ccm-networks.yaml"
+  csi_manifest_url = var.csi_manifest_url != "" ? var.csi_manifest_url : "https://raw.githubusercontent.com/hetznercloud/csi-driver/refs/tags/v${var.csi_version}/deploy/kubernetes/hcloud-csi.yml"
+
+  controlplanes_config = var.controlplanes_config != "" ? var.controlplanes_config : templatefile("${path.module}/templates/controlplanes.yaml.tpl", {
+    endpoint                     = local.endpoint,
+    private_network_name         = var.private_network_name,
+    private_network_subnet_range = var.private_network_subnet_range,
+    workers_length               = length(var.workers),
+    ccm_enabled                  = var.ccm_enabled,
+    ccm_manifest_url             = local.ccm_manifest_url,
+    ccm_hcloud_token             = var.ccm_hcloud_token,
+    csi_enabled                  = var.csi_enabled,
+    csi_manifest_url             = local.csi_manifest_url,
+  })
 }
 
 data "talos_machine_configuration" "controlplane" {

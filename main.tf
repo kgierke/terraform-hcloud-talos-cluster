@@ -24,16 +24,6 @@ resource "talos_machine_secrets" "this" {
   talos_version = var.talos_version
 }
 
-data "talos_cluster_health" "this" {
-  client_configuration = talos_machine_secrets.this.client_configuration
-  control_plane_nodes = [
-    for controlplane in var.controlplanes : hcloud_server.controlplanes[controlplane.name].ipv4_address
-  ]
-  endpoints = [
-    for controlplane in var.controlplanes : hcloud_server.controlplanes[controlplane.name].ipv4_address
-  ]
-}
-
 # create the talos client config
 data "talos_client_configuration" "this" {
   cluster_name         = var.cluster_name

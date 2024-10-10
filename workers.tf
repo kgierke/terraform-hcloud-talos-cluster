@@ -1,17 +1,7 @@
 # Configure the workers for the Hetzner Cloud Talos Kubernetes cluster
 
 locals {
-  workers_config = var.workers_config != "" ? var.workers_config : <<EOF
-machine:
-  time:
-    servers:
-      - ntp1.hetzner.de
-      - ntp2.hetzner.com
-      - ntp3.hetzner.net
-      - 0.de.pool.ntp.org
-      - 1.de.pool.ntp.org
-      - time.cloudflare.com
-  EOF
+  workers_config = var.workers_config != "" ? var.workers_config : templatefile("${path.module}/templates/workers.yaml.tpl", {})
 }
 
 data "talos_machine_configuration" "worker" {

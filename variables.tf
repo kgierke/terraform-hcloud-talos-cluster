@@ -45,87 +45,6 @@ variable "private_network_subnet_range" {
   default     = "10.0.0.0/24"
 }
 
-# Ingress related variables
-variable "ingress_enabled" {
-  type        = bool
-  description = "Define if the traefik ingress controller should be enabled."
-  default     = true
-}
-
-variable "ingress_traefik_values" {
-  type        = string
-  description = "Define the values for the traefik ingress controller."
-  default     = ""
-}
-
-variable "ingress_certmanager_values" {
-  type        = string
-  description = "Define the values for the cert-manager."
-  default     = ""
-}
-
-variable "ingress_certmanager_email" {
-  type        = string
-  description = "Define the email address for the cert-manager."
-  default     = ""
-}
-
-variable "ingress_load_balancer_location" {
-  type        = string
-  description = "Define the location of the load balancer for the ingress controller."
-  default     = "hel1"
-}
-
-variable "ingress_load_balancer_type" {
-  type        = string
-  description = "Define the type of the load balancer for the ingress controller."
-  default     = "lb11"
-}
-
-# Cloud Controller Manager related variables
-variable "cloud_controller_manager_enabled" {
-  type        = bool
-  description = "Define if the hcloud-cloud-controller-manager Helm chart should be enabled. See: https://github.com/hetznercloud/hcloud-cloud-controller-manager"
-  default     = true
-}
-
-variable "cloud_controller_manager_hcloud_token" {
-  type        = string
-  description = "Define the Hetzner Cloud API token for the cloud-controller-manager."
-  default     = ""
-}
-
-variable "cloud_controller_manager_version" {
-  type        = string
-  description = "Define the version of the hcloud-cloud-controller-manager Helm chart. See: https://github.com/hetznercloud/hcloud-cloud-controller-manager"
-  default     = "1.20.0"
-}
-
-variable "cloud_controller_manager_values" {
-  type        = string
-  description = "Define the values for the hcloud-cloud-controller-manager Helm chart. See: https://github.com/hetznercloud/hcloud-cloud-controller-manager/blob/main/chart/values.yaml"
-  default     = ""
-}
-
-# Container Storage Interface related variables
-variable "csi_enabled" {
-  type        = bool
-  description = "Define if the hcloud-csi Helm chart should be enabled. See: https://github.com/hetznercloud/csi-driver"
-  default     = true
-}
-
-variable "csi_version" {
-  type        = string
-  description = "Define the version of the hcloud-csi Helm chart. See: https://github.com/hetznercloud/csi-driver"
-  default     = "2.9.0"
-}
-
-variable "csi_values" {
-  type        = string
-  description = "Define the values for the hcloud-csi Helm chart. See: https://github.com/hetznercloud/csi-driver/blob/main/chart/values.yaml"
-  default     = ""
-}
-
 # Controlplane related variables
 variable "controlplanes" {
   type = list(object({
@@ -188,5 +107,61 @@ variable "workers" {
 variable "workers_config" {
   type        = string
   description = "Define the configuration for the worker nodes."
+  default     = ""
+}
+
+# Cloud Controller Manager related variables
+variable "ccm_enabled" {
+  type        = bool
+  description = "Define if the hcloud-cloud-controller-manager Helm chart should be enabled. See: https://github.com/hetznercloud/hcloud-cloud-controller-manager"
+  default     = true
+}
+
+variable "ccm_hcloud_token" {
+  type        = string
+  description = "Define the Hetzner Cloud API token for the cloud-controller-manager."
+  default     = ""
+}
+
+variable "ccm_version" {
+  type        = string
+  description = "Define the version of the hcloud-cloud-controller-manager Helm chart. See: https://github.com/hetznercloud/hcloud-cloud-controller-manager"
+  default     = "1.20.0"
+
+  // make sure the version is a valid semantic version and without the 'v' prefix
+  validation {
+    condition     = can(regex("^[0-9]+\\.[0-9]+\\.[0-9]+$", var.ccm_version))
+    error_message = "The version should be a valid semantic version. (It should not contain the 'v' prefix)"
+  }
+}
+
+variable "ccm_manifest_url" {
+  type        = string
+  description = "Define the URL to the Hetzner Cloud Controller Manager manifest to be deployed. Defaults to 'https://raw.githubusercontent.com/hetznercloud/hcloud-cloud-controller-manager/v<var.ccm_version>/deploy/ccm-networks.yaml'."
+  default     = ""
+}
+
+# Container Storage Interface related variables
+variable "csi_enabled" {
+  type        = bool
+  description = "Define if the hcloud-csi Helm chart should be enabled. See: https://github.com/hetznercloud/csi-driver"
+  default     = true
+}
+
+variable "csi_version" {
+  type        = string
+  description = "Define the version of the hcloud-csi Helm chart. See: https://github.com/hetznercloud/csi-driver"
+  default     = "2.9.0"
+
+  // make sure the version is a valid semantic version and without the 'v' prefix
+  validation {
+    condition     = can(regex("^[0-9]+\\.[0-9]+\\.[0-9]+$", var.csi_version))
+    error_message = "The version should be a valid semantic version. (It should not contain the 'v' prefix)"
+  }
+}
+
+variable "csi_manifest_url" {
+  type        = string
+  description = "Define the URL to the Hetzner Cloud CSI Driver manifest to be deployed. Defaults to 'https://raw.githubusercontent.com/hetznercloud/csi-driver/refs/tags/v<var.csi_version>/deploy/kubernetes/hcloud-csi.yml'."
   default     = ""
 }
