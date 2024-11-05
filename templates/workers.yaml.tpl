@@ -3,6 +3,12 @@ machine:
     nodeIP:
       validSubnets:
         - ${private_network_subnet_range}
+cluster:
+  etcd:
+    advertisedSubnets:
+      - ${private_network_subnet_range}
+  externalCloudProvider:
+    enabled: true
   time:
     servers:
       - ntp1.hetzner.de
