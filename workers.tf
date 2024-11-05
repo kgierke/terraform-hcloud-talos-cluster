@@ -1,7 +1,9 @@
 # Configure the workers for the Hetzner Cloud Talos Kubernetes cluster
 
 locals {
-  workers_config = var.workers_config != "" ? var.workers_config : templatefile("${path.module}/templates/workers.yaml.tpl", {})
+  workers_config = var.workers_config != "" ? var.workers_config : templatefile("${path.module}/templates/workers.yaml.tpl", {
+    private_network_subnet_range = var.private_network_subnet_range,
+  })
 }
 
 data "talos_machine_configuration" "worker" {

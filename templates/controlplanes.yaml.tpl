@@ -19,7 +19,9 @@ machine:
       $patch: delete
 %{endif~}
 cluster:
+%{if workers_length <= 0~}
   allowSchedulingOnControlPlanes: true
+%{endif~}
   externalCloudProvider:
     enabled: true
   extraManifests:

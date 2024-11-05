@@ -1,4 +1,8 @@
 machine:
+  kubelet:
+    nodeIP:
+      validSubnets:
+        - ${private_network_subnet_range}
   time:
     servers:
       - ntp1.hetzner.de
