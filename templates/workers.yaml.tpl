@@ -12,8 +12,5 @@ machine:
       - 1.de.pool.ntp.org
       - time.cloudflare.com
 cluster:
-  etcd:
-    advertisedSubnets:
-      - ${private_network_subnet_range}
   externalCloudProvider:
     enabled: true
