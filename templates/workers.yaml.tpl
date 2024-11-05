@@ -3,12 +3,6 @@ machine:
     nodeIP:
       validSubnets:
         - ${private_network_subnet_range}
-cluster:
-  etcd:
-    advertisedSubnets:
-      - ${private_network_subnet_range}
-  externalCloudProvider:
-    enabled: true
   time:
     servers:
       - ntp1.hetzner.de
@@ -17,3 +11,9 @@ cluster:
       - 0.de.pool.ntp.org
       - 1.de.pool.ntp.org
       - time.cloudflare.com
+cluster:
+  etcd:
+    advertisedSubnets:
+      - ${private_network_subnet_range}
+  externalCloudProvider:
+    enabled: true
