@@ -19,11 +19,14 @@ machine:
       $patch: delete
 %{endif~}
 cluster:
+  etcd:
+    advertisedSubnets:
+      - ${private_network_subnet_range}
+  externalCloudProvider:
+    enabled: true
 %{if workers_length <= 0~}
   allowSchedulingOnControlPlanes: true
 %{endif~}
-  externalCloudProvider:
-    enabled: true
   extraManifests:
 %{if ccm_enabled~}
     - ${ccm_manifest_url}
