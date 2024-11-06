@@ -2,9 +2,10 @@ data "helm_template" "cilium" {
   name      = "cilium"
   namespace = "kube-system"
 
-  repository = "https://helm.cilium.io/"
-  chart      = "cilium"
-  version    = var.cilium_version
+  repository   = "https://helm.cilium.io/"
+  chart        = "cilium"
+  version      = var.cilium_version
+  kube_version = var.kubernetes_version
 
   set {
     name  = "ipam.mode"
@@ -51,16 +52,18 @@ data "helm_template" "hcloud_ccm" {
   name      = "hcloud-cloud-controller-manager"
   namespace = "kube-system"
 
-  repository = "https://charts.hetzner.cloud"
-  chart      = "hcloud-cloud-controller-manager"
-  version    = var.ccm_version
+  repository   = "https://charts.hetzner.cloud"
+  chart        = "hcloud-cloud-controller-manager"
+  version      = var.ccm_version
+  kube_version = var.kubernetes_version
 }
 
 data "helm_template" "hcloud_csi" {
   name      = "hcloud-csi"
   namespace = "kube-system"
 
-  repository = "https://charts.hetzner.cloud"
-  chart      = "hcloud-csi"
-  version    = var.csi_version
+  repository   = "https://charts.hetzner.cloud"
+  chart        = "hcloud-csi"
+  version      = var.csi_version
+  kube_version = var.kubernetes_version
 }
