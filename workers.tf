@@ -1,11 +1,4 @@
 # Configure the workers for the Hetzner Cloud Talos Kubernetes cluster
-
-locals {
-  workers_config = var.workers_config != "" ? var.workers_config : templatefile("${path.module}/templates/workers.yaml.tpl", {
-    private_network_subnet_range = var.private_network_subnet_range,
-  })
-}
-
 data "talos_machine_configuration" "worker" {
   cluster_name       = var.cluster_name
   cluster_endpoint   = local.k8s_endpoint
@@ -15,7 +8,14 @@ data "talos_machine_configuration" "worker" {
   kubernetes_version = var.kubernetes_version
 
   config_patches = [
-    local.workers_config
+    templatefile("${path.module}/templates/common.yaml.tpl", {
+      private_network_subnet_range = var.private_network_subnet_range,
+      ccm_hcloud_token             = var.ccm_hcloud_token,
+      cilium_manifest              = data.helm_template.cilium
+      ccm_manifest                 = data.helm_template.hcloud_ccm
+      csi_manifest                 = data.helm_template.hcloud_csi
+    }),
+    templatefile("${path.module}/templates/workers.yaml.tpl", {})
   ]
 }
 

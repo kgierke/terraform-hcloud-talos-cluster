@@ -110,13 +110,19 @@ variable "workers_config" {
   default     = ""
 }
 
-# Cloud Controller Manager related variables
-variable "ccm_enabled" {
-  type        = bool
-  description = "Define if the hcloud-cloud-controller-manager Helm chart should be enabled. See: https://github.com/hetznercloud/hcloud-cloud-controller-manager"
-  default     = true
+variable "cilium_version" {
+  type        = string
+  description = "Define the version of the cilium Helm chart. See: https://docs.cilium.io/en/stable/installation/k8s-install-helm/"
+  default     = "1.16.3"
+
+  // make sure the version is a valid semantic version and without the 'v' prefix
+  validation {
+    condition     = can(regex("^[0-9]+\\.[0-9]+\\.[0-9]+$", var.cilium_version))
+    error_message = "The version should be a valid semantic version. (It should not contain the 'v' prefix)"
+  }
 }
 
+# Cloud Controller Manager related variables
 variable "ccm_hcloud_token" {
   type        = string
   description = "Define the Hetzner Cloud API token for the cloud-controller-manager."
@@ -135,33 +141,15 @@ variable "ccm_version" {
   }
 }
 
-variable "ccm_manifest_url" {
-  type        = string
-  description = "Define the URL to the Hetzner Cloud Controller Manager manifest to be deployed. Defaults to 'https://raw.githubusercontent.com/hetznercloud/hcloud-cloud-controller-manager/v<var.ccm_version>/deploy/ccm-networks.yaml'."
-  default     = ""
-}
-
 # Container Storage Interface related variables
-variable "csi_enabled" {
-  type        = bool
-  description = "Define if the hcloud-csi Helm chart should be enabled. See: https://github.com/hetznercloud/csi-driver"
-  default     = true
-}
-
 variable "csi_version" {
   type        = string
   description = "Define the version of the hcloud-csi Helm chart. See: https://github.com/hetznercloud/csi-driver"
-  default     = "2.9.0"
+  default     = "2.10.0"
 
   // make sure the version is a valid semantic version and without the 'v' prefix
   validation {
     condition     = can(regex("^[0-9]+\\.[0-9]+\\.[0-9]+$", var.csi_version))
     error_message = "The version should be a valid semantic version. (It should not contain the 'v' prefix)"
   }
-}
-
-variable "csi_manifest_url" {
-  type        = string
-  description = "Define the URL to the Hetzner Cloud CSI Driver manifest to be deployed. Defaults to 'https://raw.githubusercontent.com/hetznercloud/csi-driver/refs/tags/v<var.csi_version>/deploy/kubernetes/hcloud-csi.yml'."
-  default     = ""
 }

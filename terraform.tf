@@ -9,5 +9,10 @@ terraform {
       source  = "siderolabs/talos"
       version = ">=0.6.0"
     }
+
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">=2.16.1"
+    }
   }
 }

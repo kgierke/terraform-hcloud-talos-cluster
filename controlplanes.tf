@@ -1,22 +1,4 @@
 # Configure the control planes for the Hetzner Cloud Talos Kubernetes cluster
-
-locals {
-  ccm_manifest_url = var.ccm_manifest_url != "" ? var.ccm_manifest_url : "https://raw.githubusercontent.com/hetznercloud/hcloud-cloud-controller-manager/refs/tags/v${var.ccm_version}/deploy/ccm-networks.yaml"
-  csi_manifest_url = var.csi_manifest_url != "" ? var.csi_manifest_url : "https://raw.githubusercontent.com/hetznercloud/csi-driver/refs/tags/v${var.csi_version}/deploy/kubernetes/hcloud-csi.yml"
-
-  controlplanes_config = var.controlplanes_config != "" ? var.controlplanes_config : templatefile("${path.module}/templates/controlplanes.yaml.tpl", {
-    endpoint                     = local.endpoint,
-    private_network_name         = var.private_network_name,
-    private_network_subnet_range = var.private_network_subnet_range,
-    workers_length               = length(var.workers),
-    ccm_enabled                  = var.ccm_enabled,
-    ccm_manifest_url             = local.ccm_manifest_url,
-    ccm_hcloud_token             = var.ccm_hcloud_token,
-    csi_enabled                  = var.csi_enabled,
-    csi_manifest_url             = local.csi_manifest_url,
-  })
-}
-
 data "talos_machine_configuration" "controlplane" {
   cluster_name       = var.cluster_name
   cluster_endpoint   = local.k8s_endpoint
@@ -26,7 +8,19 @@ data "talos_machine_configuration" "controlplane" {
   kubernetes_version = var.kubernetes_version
 
   config_patches = [
-    local.controlplanes_config
+    templatefile("${path.module}/templates/common.yaml.tpl", {
+      private_network_subnet_range = var.private_network_subnet_range,
+      ccm_hcloud_token             = var.ccm_hcloud_token,
+      cilium_manifest              = data.helm_template.cilium
+      ccm_manifest                 = data.helm_template.hcloud_ccm
+      csi_manifest                 = data.helm_template.hcloud_csi
+    }),
+    templatefile("${path.module}/templates/controlplanes.yaml.tpl", {
+      endpoint                     = local.endpoint,
+      private_network_name         = var.private_network_name,
+      private_network_subnet_range = var.private_network_subnet_range,
+      workers_length               = length(var.workers),
+    })
   ]
 }
 
