@@ -9,6 +9,7 @@ data "talos_machine_configuration" "controlplane" {
 
   config_patches = [
     templatefile("${path.module}/templates/common.yaml.tpl", {
+      private_network_name         = var.private_network_name,
       private_network_subnet_range = var.private_network_subnet_range,
       ccm_hcloud_token             = var.ccm_hcloud_token,
       cilium_manifest              = data.helm_template.cilium
@@ -17,7 +18,6 @@ data "talos_machine_configuration" "controlplane" {
     }),
     templatefile("${path.module}/templates/controlplanes.yaml.tpl", {
       endpoint                     = local.endpoint,
-      private_network_name         = var.private_network_name,
       private_network_subnet_range = var.private_network_subnet_range,
       workers_length               = length(var.workers),
     })
