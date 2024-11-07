@@ -32,3 +32,8 @@ output "kubeconfig" {
   value       = talos_cluster_kubeconfig.this
   sensitive   = true
 }
+
+output "healthcheck" {
+  description = "Healthcheck for the cluster."
+  value       = data.http.talos_health
+}

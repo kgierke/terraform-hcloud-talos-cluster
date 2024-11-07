@@ -1,11 +1,10 @@
-data "helm_template" "cilium" {
+resource "helm_release" "cilium" {
   name      = "cilium"
   namespace = "kube-system"
 
-  repository   = "https://helm.cilium.io/"
-  chart        = "cilium"
-  version      = var.cilium_version
-  kube_version = var.kubernetes_version
+  repository = "https://helm.cilium.io/"
+  chart      = "cilium"
+  version    = var.cilium_version
 
   set {
     name  = "ipam.mode"
@@ -46,24 +45,39 @@ data "helm_template" "cilium" {
     name  = "k8sServicePort"
     value = "7445"
   }
+
+  depends_on = [
+    data.http.talos_health
+  ]
 }
 
-data "helm_template" "hcloud_ccm" {
+resource "helm_release" "hcloud_ccm" {
   name      = "hcloud-cloud-controller-manager"
   namespace = "kube-system"
 
-  repository   = "https://charts.hetzner.cloud"
-  chart        = "hcloud-cloud-controller-manager"
-  version      = var.ccm_version
-  kube_version = var.kubernetes_version
+  repository = "https://charts.hetzner.cloud"
+  chart      = "hcloud-cloud-controller-manager"
+  version    = var.ccm_version
+
+  set {
+    name  = "networking.enabled"
+    value = "true"
+  }
+
+  depends_on = [
+    data.http.talos_health
+  ]
 }
 
-data "helm_template" "hcloud_csi" {
+resource "helm_release" "hcloud_csi" {
   name      = "hcloud-csi"
   namespace = "kube-system"
 
-  repository   = "https://charts.hetzner.cloud"
-  chart        = "hcloud-csi"
-  version      = var.csi_version
-  kube_version = var.kubernetes_version
+  repository = "https://charts.hetzner.cloud"
+  chart      = "hcloud-csi"
+  version    = var.csi_version
+
+  depends_on = [
+    data.http.talos_health
+  ]
 }

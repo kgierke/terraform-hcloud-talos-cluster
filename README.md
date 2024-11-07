@@ -73,6 +73,8 @@ By default the module will install the Hetzner Cloud Controller Manager and Cont
 | Name | Version |
 |------|---------|
 | <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | >=1.43.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >=2.16.1 |
+| <a name="requirement_http"></a> [http](#requirement\_http) | >=3.4.5 |
 | <a name="requirement_talos"></a> [talos](#requirement\_talos) | >=0.6.0 |
 
 ## Resources
@@ -80,6 +82,7 @@ By default the module will install the Hetzner Cloud Controller Manager and Cont
 | Name | Type |
 |------|------|
 | [hcloud_image.talos](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/image) | data source |
+| [http_http.talos_health](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 | [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/data-sources/client_configuration) | data source |
 | [talos_machine_configuration.controlplane](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/data-sources/machine_configuration) | data source |
 | [talos_machine_configuration.worker](https://registry.terraform.io/providers/siderolabs/talos/latest/docs/data-sources/machine_configuration) | data source |
@@ -90,16 +93,13 @@ By default the module will install the Hetzner Cloud Controller Manager and Cont
 |------|-------------|------|---------|:--------:|
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Define the name of the cluster. | `string` | n/a | yes |
 | <a name="input_cluster_tld"></a> [cluster\_tld](#input\_cluster\_tld) | Define the top-level domain for the cluster. | `string` | n/a | yes |
-| <a name="input_ccm_enabled"></a> [ccm\_enabled](#input\_ccm\_enabled) | Define if the hcloud-cloud-controller-manager Helm chart should be enabled. See: https://github.com/hetznercloud/hcloud-cloud-controller-manager | `bool` | `true` | no |
 | <a name="input_ccm_hcloud_token"></a> [ccm\_hcloud\_token](#input\_ccm\_hcloud\_token) | Define the Hetzner Cloud API token for the cloud-controller-manager. | `string` | `""` | no |
-| <a name="input_ccm_manifest_url"></a> [ccm\_manifest\_url](#input\_ccm\_manifest\_url) | Define the URL to the Hetzner Cloud Controller Manager manifest to be deployed. Defaults to 'https://raw.githubusercontent.com/hetznercloud/hcloud-cloud-controller-manager/v<var.ccm\_version>/deploy/ccm-networks.yaml'. | `string` | `""` | no |
 | <a name="input_ccm_version"></a> [ccm\_version](#input\_ccm\_version) | Define the version of the hcloud-cloud-controller-manager Helm chart. See: https://github.com/hetznercloud/hcloud-cloud-controller-manager | `string` | `"1.20.0"` | no |
+| <a name="input_cilium_version"></a> [cilium\_version](#input\_cilium\_version) | Define the version of the cilium Helm chart. See: https://docs.cilium.io/en/stable/installation/k8s-install-helm/ | `string` | `"1.16.3"` | no |
 | <a name="input_controlplanes"></a> [controlplanes](#input\_controlplanes) | List of controlplane nodes, should be either 1 or 3 nodes. | <pre>list(object({<br/>    name        = string<br/>    server_type = string<br/>    location    = string<br/>  }))</pre> | <pre>[<br/>  {<br/>    "location": "hel1",<br/>    "name": "columbia",<br/>    "server_type": "cx22"<br/>  }<br/>]</pre> | no |
 | <a name="input_controlplanes_config"></a> [controlplanes\_config](#input\_controlplanes\_config) | Define the configuration for the controlplane nodes. | `string` | `""` | no |
-| <a name="input_csi_enabled"></a> [csi\_enabled](#input\_csi\_enabled) | Define if the hcloud-csi Helm chart should be enabled. See: https://github.com/hetznercloud/csi-driver | `bool` | `true` | no |
-| <a name="input_csi_manifest_url"></a> [csi\_manifest\_url](#input\_csi\_manifest\_url) | Define the URL to the Hetzner Cloud CSI Driver manifest to be deployed. Defaults to 'https://raw.githubusercontent.com/hetznercloud/csi-driver/refs/tags/v<var.csi\_version>/deploy/kubernetes/hcloud-csi.yml'. | `string` | `""` | no |
-| <a name="input_csi_version"></a> [csi\_version](#input\_csi\_version) | Define the version of the hcloud-csi Helm chart. See: https://github.com/hetznercloud/csi-driver | `string` | `"2.9.0"` | no |
-| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Define the version of Kubernetes to use. | `string` | `"1.31.1"` | no |
+| <a name="input_csi_version"></a> [csi\_version](#input\_csi\_version) | Define the version of the hcloud-csi Helm chart. See: https://github.com/hetznercloud/csi-driver | `string` | `"2.10.0"` | no |
+| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Define the version of Kubernetes to use. | `string` | `"1.31.2"` | no |
 | <a name="input_network_zone"></a> [network\_zone](#input\_network\_zone) | Define the zone of the network. | `string` | `"eu-central"` | no |
 | <a name="input_private_network_ip_range"></a> [private\_network\_ip\_range](#input\_private\_network\_ip\_range) | Define the IP range of the private network. | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_private_network_name"></a> [private\_network\_name](#input\_private\_network\_name) | Define the name of the private network. | `string` | `"internal"` | no |

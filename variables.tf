@@ -17,7 +17,7 @@ variable "talos_version" {
 variable "kubernetes_version" {
   type        = string
   description = "Define the version of Kubernetes to use."
-  default     = "1.31.1"
+  default     = "1.31.2"
 }
 
 # Network related variables
@@ -127,6 +127,7 @@ variable "ccm_hcloud_token" {
   type        = string
   description = "Define the Hetzner Cloud API token for the cloud-controller-manager."
   default     = ""
+  sensitive   = true
 }
 
 variable "ccm_version" {
