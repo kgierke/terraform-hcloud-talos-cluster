@@ -81,3 +81,12 @@ resource "helm_release" "hcloud_csi" {
     data.http.talos_health
   ]
 }
+
+resource "helm_release" "metrics-server" {
+  name      = "metrics-server"
+  namespace = "kube-system"
+
+  repository = "https://kubernetes-sigs.github.io/metrics-server"
+  chart      = "metrics-server"
+  version    = var.metrics_server_version
+}

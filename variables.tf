@@ -154,3 +154,16 @@ variable "csi_version" {
     error_message = "The version should be a valid semantic version. (It should not contain the 'v' prefix)"
   }
 }
+
+# Metrics Server related variables
+variable "metrics_server_version" {
+  type        = string
+  description = "Define the version of the metrics-server Helm chart. See: https://artifacthub.io/packages/helm/metrics-server/metrics-server"
+  default     = "3.12.2"
+
+  // make sure the version is a valid semantic version and without the 'v' prefix
+  validation {
+    condition     = can(regex("^[0-9]+\\.[0-9]+\\.[0-9]+$", var.metrics_server_version))
+    error_message = "The version should be a valid semantic version. (It should not contain the 'v' prefix)"
+  }
+}

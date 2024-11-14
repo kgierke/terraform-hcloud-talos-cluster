@@ -3,6 +3,9 @@ machine:
     nodeIP:
       validSubnets:
         - ${private_network_subnet_range}
+    extraArgs:
+      cloud-provider: external
+      rotate-server-certificates: true
   certSANs:
     - ${endpoint}
   time:
@@ -16,6 +19,8 @@ machine:
 cluster:
   externalCloudProvider:
     enabled: true
+    manifests:
+      - https://raw.githubusercontent.com/siderolabs/talos-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
   network:
     cni:
       name: none

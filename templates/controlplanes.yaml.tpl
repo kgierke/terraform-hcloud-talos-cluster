@@ -3,6 +3,16 @@ machine:
     nodeIP:
       validSubnets:
         - ${private_network_subnet_range}
+    extraArgs:
+      cloud-provider: external
+      rotate-server-certificates: true
+  features:
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles:
+        - os:reader
+      allowedKubernetesNamespaces:
+        - kube-system
   certSANs:
     - ${endpoint}
 %{if workers_length <= 0~}
@@ -27,6 +37,8 @@ cluster:
 %{endif~}
   externalCloudProvider:
     enabled: true
+    manifests:
+      - https://raw.githubusercontent.com/siderolabs/talos-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
   network:
     cni:
       name: none
